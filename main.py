@@ -75,8 +75,37 @@ class GuestDetailsHandler(BaseHandler):
         return self.render_template("guest_list.html", params=params)
 
 
+class EditCommentHandler(BaseHandler):
+    def get(self, comment_id):
+        comment = Comment.get_by_id(int(comment_id))
+        params = {"comment": comment}
+        return self.render_template("comment_edit.html", params=params)
+
+    def post(self, comment_id):
+        new_name = self.request.get("name")
+        new_email = self.request.get("email")
+        new_text = self.request.get("text")
+        comment = Comment.get_by_id(int(comment_id))
+        comment.text = new_text
+        comment.put()
+        return self.redirect_to("guest_list.html")
+
+
+class DeleteCommentHandler(BaseHandler):
+    def get(self, comment_id):
+        comment = Comment.get_by_id(int(comment_id))
+        params = {"comment": comment}
+        return self.render_template("comment_delete.html", params=params)
+
+    def post(self, comment_id):
+        comment = Comment.get_by_id(int(comment_id))
+        comment.key.delete()
+        return self.redirect_to("list")
+
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/comment_list', CommentListHandler),
-    webapp2.Route('/guest_list', GuestDetailsHandler)
+    webapp2.Route('/guest_list', GuestDetailsHandler, name="list"),
+    webapp2.Route('/guest_list/<comment_id:\d+>/edit', EditCommentHandler),
+    webapp2.Route('/guest_list/<comment_id:\d+>/delete', DeleteCommentHandler)
 ], debug=True)# Guest_List
