@@ -7,9 +7,9 @@
 
 <body>
     <h1>Filton Hotel GuestBook</h1>
-
-    <p>{{ comment.text }}</p>
-    <p>Posted by: {{ comment.name() }}</p>
-
+    {% for comment in comments %}
+        <p>{{ comment.text }}</p>
+        <p>Posted by: {{ comment.name }}</p>
+    {% endfor %}
 </body>
 </html>

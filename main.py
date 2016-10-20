@@ -4,14 +4,14 @@ import webapp2
 from google.appengine.ext import ndb
 
 
+class Comment(ndb.Model):
+    name = ndb.StringProperty()
+    email = ndb.StringProperty()
+    text = ndb.StringProperty()
+
+
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
-
-
-class Comment(ndb.Model):
-    comment_name = ndb.StringProperty()
-    comment_email = ndb.StringProperty()
-    comment_text = ndb.StringProperty()
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -45,22 +45,27 @@ class MainHandler(BaseHandler):
         return self.render_template("hello.html")
 
     def post(self):
-        text = self.request.get("text")
-        if len(text) < 10:
-            self.render_template("hello.html")
-            self.write("OOps! You forgot to type your message")
-        else:
-            return self.render_template("guestbook.html")
-
-
-class CommentListHandler(BaseHandler):
-    def post(self):
         name = self.request.get("name")
         email = self.request.get("email")
         text = self.request.get("text")
 
-        comment = Comment(comment_name=name, comment_email=email, comment_text=text)
+        if len(text) <= 5:
+            self.write("OOps! You forgot to type your message")
+            self.render_template("hello.html")
+            return
+
+        comment = Comment(name=name, email=email, text=text)
         comment.put()
+        comments = Comment.query().fetch()
+        params = {"comments": comments}
+        return self.render_template("guest_list.html", params=params)
+
+
+class CommentListHandler(BaseHandler):
+    def get(self):
+        comments = Comment.query().fetch()
+        params = {"comments": comments}
+        return self.render_template("guestbook.html", params=params)
 
 
 class GuestDetailsHandler(BaseHandler):
@@ -73,5 +78,5 @@ class GuestDetailsHandler(BaseHandler):
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/comment_list', CommentListHandler),
-    webapp2.Route('/guest_list/<guess_id:\d+>', GuestDetailsHandler)
+    webapp2.Route('/guest_list', GuestDetailsHandler)
 ], debug=True)# Guest_List
