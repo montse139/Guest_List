@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Current_time/.idea/Current_time.iml" filepath="$PROJECT_DIR$/../Current_time/.idea/Current_time.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Guest_Book.iml" filepath="$PROJECT_DIR$/.idea/Guest_Book.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../TODO_post/.idea/TODO_post.iml" filepath="$PROJECT_DIR$/../TODO_post/.idea/TODO_post.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../movie_list/.idea/movie_list.iml" filepath="$PROJECT_DIR$/../movie_list/.idea/movie_list.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../todo/.idea/todo.iml" filepath="$PROJECT_DIR$/../todo/.idea/todo.iml" />
     </modules>
   </component>
 </project>

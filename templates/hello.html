@@ -6,18 +6,29 @@
 
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-    <h1>GuestBook</h1>
 
-    <h3>Did you enjoy your stay? Then leave us a comment!</h3>
+    <body>
 
-    <form method="post" action="/">
-        Name:<br>
-        <input name="name" type="text" /><br>
-        email:<br>
-        <input name="email" type="email" /><br>
-        Your comment:<br>
-        <input name="text" type="text" /><br>
-        <input type="submit" value="Publish" />
-    </form>
+        {% if logged_in %}
+            <h1>Hello {{ user.nickname() }}!</h1>
+            <h1>GuestBook</h1>
+
+            <h3>Did you enjoy your stay? Then leave us a comment!</h3>
+
+            <form method="post" action="/">
+                Name:<br>
+                <input name="name" type="text" />
+                <br>
+                <textarea cols="50" rows="10" name="text" placeholder="Enter text here..."></textarea>
+                <input type="submit" value="Publish" />
+            </form>
+
+            <p><a href="{{ logout_url }}">Logout</a></p>
+        {% else %}
+
+            <h1>Hello anonymous guest!</h1>
+
+            <p>Please login here: <a href="{{ login_url }}">Login</a></p>
+        {% endif %}
 </body>
 </html>

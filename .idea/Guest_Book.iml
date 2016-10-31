@@ -4,5 +4,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="todo" />
+    <orderEntry type="module" module-name="TODO_post" />
+    <orderEntry type="module" module-name="Current_time" />
+    <orderEntry type="module" module-name="movie_list" />
   </component>
 </module>

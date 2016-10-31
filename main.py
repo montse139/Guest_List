@@ -2,6 +2,7 @@ import os
 import jinja2
 import webapp2
 from google.appengine.ext import ndb
+from google.appengine.api import users
 
 
 class Comment(ndb.Model):
@@ -42,11 +43,23 @@ class Guest(object):
 
 class MainHandler(BaseHandler):
     def get(self):
-        return self.render_template("hello.html")
+        user = users.get_current_user()
+
+        if user:
+            logged_in = True
+            logout_url = users.create_logout_url('/')
+
+            params = {"logged_in": logged_in, "logout_url": logout_url, "user": user}
+        else:
+            logged_in = False
+            login_url = users.create_login_url('/')
+
+            params = {"logged_in": logged_in, "login_url": login_url, "user": user}
+
+        return self.render_template("hello.html", params)
 
     def post(self):
         name = self.request.get("name")
-        email = self.request.get("email")
         text = self.request.get("text")
 
         if len(text) <= 5:
@@ -54,6 +67,8 @@ class MainHandler(BaseHandler):
             self.render_template("hello.html")
             return
 
+        user = users.get_current_user()
+        email = user.email()
         comment = Comment(name=name, email=email, text=text)
         comment.put()
         comments = Comment.query().fetch()
